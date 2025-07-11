@@ -1,42 +1,42 @@
-require('dotenv').config();
 const express = require('express');
-const cors = require('cors'); // Importation de CORS
-const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
+const cors = require('cors'); // Importation du middleware CORS
+const helmet = require('helmet');
+const morgan = require('morgan');
+const dotenv = require('dotenv');
+const connectDB = require('./config/db');
+
+dotenv.config();
 const app = express();
 
-// Middleware pour gérer les requêtes JSON
-app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+// Connexion à la base de données
+connectDB();
 
-// Utiliser CORS pour autoriser les requêtes provenant d'autres domaines
-app.use(cors()); // Ajout du middleware CORS
-
-// Connexion à la base de données MongoDB
-mongoose.connect(process.env.MONGO_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log('Database connected'))
-.catch((err) => console.error('Database connection error:', err));
+// Middleware CORS ajouté ici
+app.use(cors()); // Autorise les requêtes depuis d'autres origines
+app.use(helmet()); // Sécurise l'application en définissant divers en-têtes HTTP
+app.use(morgan('dev')); // Enregistre les requêtes HTTP dans la console
+app.use(express.json()); // Permet à l'application de traiter les requêtes JSON
 
 // Routes
 const authRoutes = require('./routes/auth');
 const membersRoutes = require('./routes/members');
 
-// Route de test pour vérifier si l'API fonctionne
+// Utilisation des routes
+app.use('/api', authRoutes);
+app.use('/api/members', membersRoutes);
+
+// Route de base
 app.get('/', (req, res) => {
-  res.send('API PONAH opérationnelle !');
+  res.json({ message: 'API PONAH en ligne 🎉' });
 });
 
-// Routes API pour les utilisateurs
-app.use('/api/auth', authRoutes); // Toutes les routes d'authentification sous /api/auth
+// Gestion des erreurs 404 pour les routes non définies
+app.use((req, res) => {
+  res.status(404).json({ message: 'Route non trouvée' });
+});
 
-// Routes API pour les membres
-app.use('/api/members', membersRoutes); // Toutes les routes des membres sous /api/members
-
-// Définir le port d'écoute
+// Démarrage du serveur
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`✅ Serveur démarré sur le port ${PORT}`);
 });
