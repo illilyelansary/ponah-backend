@@ -1,0 +1,29 @@
+
+# Node.js
+node_modules/
+.env
+dist/
+coverage/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Logs
+logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor folders
+.vscode/
+.idea/
+
+# Production build
+/build
+
+# dotenv environment variables file
+.env.local
+.env.*.local
