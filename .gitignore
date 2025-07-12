@@ -1,33 +1,23 @@
+# Ne pas publier le fichier .env
+.env
+
 # Node modules
 node_modules/
 
-# Logs
+# Fichiers de log
 logs
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Environment variables
-.env
-.env.local
-.env.*.local
-
-# Build output
+# Dossier de build (si utilisé)
 dist/
 build/
 
-# OS-specific
+# Fichiers système
 .DS_Store
 Thumbs.db
 
-# Optional npm cache directory
-.npm
-
-# IDEs and editors
+# VSCode settings (facultatif)
 .vscode/
-.idea/
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
