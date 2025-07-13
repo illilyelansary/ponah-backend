@@ -1,14 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const memberCtrl = require('../controllers/memberController');
-const auth = require('../middleware/authMiddleware');
+const memberController = require('../controllers/memberController');
+const authMiddleware = require('../middleware/authMiddleware');
 const checkAdmin = require('../middleware/checkAdmin');
 
-// ✅ Route publique
-router.get('/', memberCtrl.getMembers);
+// ✅ Route publique : lire les membres avec filtre + pagination
+router.get('/', memberController.getMembers);
 
-// ✅ Routes admin
-router.post('/', auth, checkAdmin, memberCtrl.addMember);
-router.delete('/:id', auth, checkAdmin, memberCtrl.deleteMember);
+// ✅ Routes protégées : admin uniquement
+router.post('/', authMiddleware, checkAdmin, memberController.addMember);
 router.put('/:id', authMiddleware, checkAdmin, memberController.updateMember);
+router.delete('/:id', authMiddleware, checkAdmin, memberController.deleteMember);
+
 module.exports = router;
