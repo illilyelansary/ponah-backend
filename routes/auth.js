@@ -1,9 +1,10 @@
 // routes/auth.js
-const express = require('express');
+import express from 'express';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import User from '../models/User.js'; // IMPORTANT: Assure-toi que le fichier s'appelle bien User.js
+
 const router = express.Router();
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const User = require('../models/User');
 
 // Middleware pour protéger certaines routes
 const authenticateToken = (req, res, next) => {
@@ -25,13 +26,11 @@ router.post('/register', async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    // Vérifier si l'utilisateur existe déjà
     const existing = await User.findOne({ email });
     if (existing) {
       return res.status(400).json({ message: 'Email déjà utilisé' });
     }
 
-    // Hasher le mot de passe
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUser = new User({
@@ -42,7 +41,6 @@ router.post('/register', async (req, res) => {
 
     await newUser.save();
 
-    // Créer un token
     const token = jwt.sign({ id: newUser._id, name: newUser.name }, process.env.JWT_SECRET, {
       expiresIn: '7d'
     });
@@ -83,4 +81,5 @@ router.get('/protected', authenticateToken, (req, res) => {
   res.json({ message: 'Accès autorisé', user: req.user });
 });
 
-module.exports = router;
+// ✅ Export ES Module
+export default router;
