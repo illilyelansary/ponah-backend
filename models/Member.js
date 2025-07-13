@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+// src/models/Member.js
+import mongoose from 'mongoose';
 
 const memberSchema = new mongoose.Schema({
   fullName: { type: String, required: true },
@@ -13,4 +14,5 @@ const memberSchema = new mongoose.Schema({
   recent: { type: Boolean, default: false }
 });
 
-module.exports = mongoose.model('Member', memberSchema);
+const Member = mongoose.model('Member', memberSchema);
+export default Member;
