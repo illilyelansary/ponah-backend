@@ -1,8 +1,8 @@
 // controllers/memberController.js
-const Member = require('../models/Member');
+import Member from '../models/Member.js';
 
 // GET /api/members?zone=Kayes&page=1&limit=10
-exports.getMembers = async (req, res) => {
+export const getMembers = async (req, res) => {
   try {
     const { zone, page = 1, limit = 10 } = req.query;
 
