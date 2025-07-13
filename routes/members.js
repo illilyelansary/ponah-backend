@@ -1,15 +1,23 @@
-const express = require('express');
+// routes/members.js
+import express from 'express';
+import {
+  getMembers,
+  addMember,
+  updateMember,
+  deleteMember
+} from '../controllers/memberController.js';
+
+import authMiddleware from '../middleware/authMiddleware.js';
+import checkAdmin from '../middleware/checkAdmin.js';
+
 const router = express.Router();
-const memberController = require('../controllers/memberController');
-const authMiddleware = require('../middleware/authMiddleware');
-const checkAdmin = require('../middleware/checkAdmin');
 
 // ✅ Route publique : lire les membres avec filtre + pagination
-router.get('/', memberController.getMembers);
+router.get('/', getMembers);
 
 // ✅ Routes protégées : admin uniquement
-router.post('/', authMiddleware, checkAdmin, memberController.addMember);
-router.put('/:id', authMiddleware, checkAdmin, memberController.updateMember);
-router.delete('/:id', authMiddleware, checkAdmin, memberController.deleteMember);
+router.post('/', authMiddleware, checkAdmin, addMember);
+router.put('/:id', authMiddleware, checkAdmin, updateMember);
+router.delete('/:id', authMiddleware, checkAdmin, deleteMember);
 
-module.exports = router;
+export default router; // 🔥 Important : utiliser export default
