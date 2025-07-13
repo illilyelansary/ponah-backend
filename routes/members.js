@@ -10,5 +10,5 @@ router.get('/', memberCtrl.getMembers);
 // ✅ Routes admin
 router.post('/', auth, checkAdmin, memberCtrl.addMember);
 router.delete('/:id', auth, checkAdmin, memberCtrl.deleteMember);
-
+router.put('/:id', authMiddleware, checkAdmin, memberController.updateMember);
 module.exports = router;
