@@ -1,3 +1,5 @@
+// middleware/checkAdmin.js
+
 const checkAdmin = (req, res, next) => {
   if (req.user?.role !== 'admin') {
     return res.status(403).json({ message: 'Accès réservé aux administrateurs' });
@@ -5,4 +7,4 @@ const checkAdmin = (req, res, next) => {
   next();
 };
 
-module.exports = checkAdmin;
+export default checkAdmin;
